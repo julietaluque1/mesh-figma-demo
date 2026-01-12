@@ -1,0 +1,47 @@
+{
+  "colors": {
+    "primary": {
+      "light": "#E6E8F0",
+      "medium": "#B0B9CF",
+      "main": "#001C65",
+      "dark": "#00113D"
+    },
+    "secondary": {
+      "light": "#BFDBFD",
+      "main": "#308CF8",
+      "dark": "#15568F"
+    },
+    "error": {
+      "light": "#FBD9D8",
+      "main": "#CF2E2E",
+      "dark": "#90141C"
+    },
+    "warning": {
+      "light": "#FBEAD2",
+      "main": "#F3AA47",
+      "dark": "#E68231"
+    },
+    "success": {
+      "light": "#CDE4CA",
+      "main": "#7BB872",
+      "dark": "#25601B"
+    },
+    "info": {
+      "light": "#CBE8FA",
+      "main": "#58B4F0",
+      "dark": "#2F70A9"
+    },
+    "neutral": {
+      "lighter": "#FAFAFA",
+      "light": "#F7F7F7",
+      "medium": "#F5F5F5",
+      "main": "#DEDEDE",
+      "dark": "#BABABA",
+      "darker": "#797979"
+    },
+    "text": {
+      "darker": "#212121",
+      "medium": "#515151"
+    }
+  }
+}
