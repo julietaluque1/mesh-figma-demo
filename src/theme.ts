@@ -71,6 +71,11 @@ export const typography = {
     bt2: { fontSize: '16px', lineHeight: '24px', fontWeight: 500 },
     bt3: { fontSize: '12px', lineHeight: '18px', fontWeight: 500 },
   },
+  inputs: {
+    in1: { fontSize: '16px', lineHeight: '24px', fontWeight: 400 },
+    in2: { fontSize: '12px', lineHeight: '16px', fontWeight: 400 },
+    in3: { fontSize: '12px', lineHeight: '16px', fontWeight: 600 },
+  },
 }
 
 export const theme = createTheme({
