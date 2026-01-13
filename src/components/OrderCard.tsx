@@ -75,6 +75,10 @@ export default function OrderCard({
         display: 'flex',
         gap: 1,
         alignItems: 'flex-start',
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+        },
       }}
     >
       {/* Checkbox (selection mode) */}
@@ -146,6 +150,10 @@ export default function OrderCard({
                     fontSize: 16,
                     color: colors.text.medium,
                     cursor: 'pointer',
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      color: colors.text.darker,
+                    },
                   }}
                 />
               </Tooltip>
@@ -312,8 +320,10 @@ export default function OrderCard({
             sx={{
               p: 0,
               ml: 0.5,
+              transition: 'all 0.2s ease-in-out',
               '&:hover': {
                 backgroundColor: 'transparent',
+                transform: 'scale(1.2)',
               },
             }}
           >

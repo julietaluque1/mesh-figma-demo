@@ -48,6 +48,7 @@ export default function UserProfileDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.neutral.medium,
           },
@@ -71,6 +72,7 @@ export default function UserProfileDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.neutral.medium,
           },
@@ -94,6 +96,7 @@ export default function UserProfileDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.neutral.medium,
           },
@@ -117,6 +120,7 @@ export default function UserProfileDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.neutral.medium,
           },
@@ -140,6 +144,7 @@ export default function UserProfileDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.error.light,
           },

@@ -48,6 +48,7 @@ export default function NewOrderDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.secondary.light,
           },
@@ -71,6 +72,7 @@ export default function NewOrderDropdown({
         sx={{
           py: 1.5,
           px: 2,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.secondary.light,
           },

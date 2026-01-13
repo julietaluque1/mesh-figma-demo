@@ -24,6 +24,7 @@ export default function SidebarNavItem({
         py: 1,
         minHeight: 40,
         backgroundColor: active ? colors.primary.dark : 'transparent',
+        transition: 'all 0.2s ease-in-out',
         '&:hover': {
           backgroundColor: active ? colors.primary.dark : 'rgba(255, 255, 255, 0.05)',
         },

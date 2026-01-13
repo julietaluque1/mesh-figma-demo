@@ -95,6 +95,7 @@ export default function Sidebar({ activeItem = 'Dashboard', onNavigate }: Sideba
           lineHeight: '24px',
           fontWeight: 500,
           mb: 4,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
             backgroundColor: colors.secondary.dark,
           },
@@ -212,6 +213,7 @@ export default function Sidebar({ activeItem = 'Dashboard', onNavigate }: Sideba
             alignItems: 'center',
             justifyContent: 'space-between',
             cursor: 'pointer',
+            transition: 'all 0.2s ease-in-out',
             '&:hover': {
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
             },

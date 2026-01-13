@@ -6,13 +6,30 @@ import TopNavBar from './components/TopNavBar'
 import OrderCard from './components/OrderCard'
 import NewOrderDropdown from './components/NewOrderDropdown'
 import Input from './components/Input'
+import SelectionBar from './components/SelectionBar'
+import BatchUploadModal from './components/BatchUploadModal'
 import { colors, typography } from './theme'
+
+// All order IDs for selection
+const allOrderIds = [
+  'mesh_order_001',
+  'mesh_order_002',
+  'mesh_order_003',
+  'mesh_order_004',
+  'mesh_order_005',
+  'mesh_order_006',
+  'mesh_order_007',
+  'mesh_order_008',
+]
 
 function App() {
   const [activeItem, setActiveItem] = useState('Dashboard')
   const [newOrderAnchor, setNewOrderAnchor] = useState<null | HTMLElement>(null)
   const [activeTab, setActiveTab] = useState<'all-orders' | 'batches'>('all-orders')
   const [searchQuery, setSearchQuery] = useState('')
+  const [isSelectionMode, setIsSelectionMode] = useState(false)
+  const [selectedOrders, setSelectedOrders] = useState<Set<string>>(new Set())
+  const [batchUploadModalOpen, setBatchUploadModalOpen] = useState(false)
 
   const handleSearch = (query: string) => {
     console.log('Search query:', query)
@@ -33,6 +50,46 @@ function App() {
   const handleNewOrderSelect = (option: string) => {
     console.log('New order option selected:', option)
     setNewOrderAnchor(null)
+    if (option === 'Batch Upload') {
+      setBatchUploadModalOpen(true)
+    }
+  }
+
+  const handleToggleSelectionMode = () => {
+    setIsSelectionMode(!isSelectionMode)
+    if (isSelectionMode) {
+      // Clear selections when exiting selection mode
+      setSelectedOrders(new Set())
+    }
+  }
+
+  const handleSelectOrder = (orderId: string, selected: boolean) => {
+    const newSelected = new Set(selectedOrders)
+    if (selected) {
+      newSelected.add(orderId)
+    } else {
+      newSelected.delete(orderId)
+    }
+    setSelectedOrders(newSelected)
+  }
+
+  const handleSelectAll = () => {
+    // Toggle: if all are selected, unselect all; otherwise select all
+    if (selectedOrders.size === allOrderIds.length) {
+      setSelectedOrders(new Set())
+    } else {
+      setSelectedOrders(new Set(allOrderIds))
+    }
+  }
+
+  const handleExport = () => {
+    console.log('Exporting orders:', Array.from(selectedOrders))
+    // TODO: Implement export logic
+  }
+
+  const handleCloseSelection = () => {
+    setIsSelectionMode(false)
+    setSelectedOrders(new Set())
   }
 
   return (
@@ -92,6 +149,7 @@ function App() {
                 fontSize: 16,
                 lineHeight: '24px',
                 fontWeight: 500,
+                transition: 'all 0.2s ease-in-out',
                 '&:hover': {
                   backgroundColor: colors.secondary.dark,
                 },
@@ -122,6 +180,7 @@ function App() {
                 pb: 1,
                 cursor: 'pointer',
                 borderBottom: activeTab === 'all-orders' ? `2px solid ${colors.primary.main}` : `1px solid ${colors.primary.medium}`,
+                transition: 'border-bottom 0.2s ease-in-out',
               }}
             >
               <Typography
@@ -130,6 +189,7 @@ function App() {
                   lineHeight: typography.inputs.in1.lineHeight,
                   fontWeight: typography.inputs.in1.fontWeight,
                   color: activeTab === 'all-orders' ? colors.primary.dark : colors.primary.main,
+                  transition: 'color 0.2s ease-in-out',
                 }}
               >
                 All orders (8)
@@ -142,6 +202,7 @@ function App() {
                 pb: 1,
                 cursor: 'pointer',
                 borderBottom: activeTab === 'batches' ? `2px solid ${colors.primary.main}` : `1px solid ${colors.primary.medium}`,
+                transition: 'border-bottom 0.2s ease-in-out',
               }}
             >
               <Typography
@@ -150,6 +211,7 @@ function App() {
                   lineHeight: typography.inputs.in1.lineHeight,
                   fontWeight: typography.inputs.in1.fontWeight,
                   color: activeTab === 'batches' ? colors.primary.dark : colors.primary.main,
+                  transition: 'color 0.2s ease-in-out',
                 }}
               >
                 Batches
@@ -185,6 +247,7 @@ function App() {
                   lineHeight: typography.button.bt1.lineHeight,
                   fontWeight: typography.button.bt1.fontWeight,
                   textTransform: 'none',
+                  transition: 'all 0.2s ease-in-out',
                   '&:hover': {
                     backgroundColor: 'rgba(48, 140, 248, 0.08)',
                   },
@@ -201,6 +264,7 @@ function App() {
                   lineHeight: typography.button.bt1.lineHeight,
                   fontWeight: typography.button.bt1.fontWeight,
                   textTransform: 'none',
+                  transition: 'all 0.2s ease-in-out',
                   '&:hover': {
                     backgroundColor: 'rgba(48, 140, 248, 0.08)',
                   },
@@ -210,6 +274,40 @@ function App() {
               </Button>
             </Box>
           </Box>
+
+          {/* Select to export button - only show when NOT in selection mode */}
+          {!isSelectionMode && (
+            <Box sx={{ mb: 3 }}>
+              <Button
+                variant="text"
+                onClick={handleToggleSelectionMode}
+                sx={{
+                  color: colors.secondary.main,
+                  fontSize: typography.button.bt1.fontSize,
+                  lineHeight: typography.button.bt1.lineHeight,
+                  fontWeight: typography.button.bt1.fontWeight,
+                  textTransform: 'none',
+                  transition: 'all 0.2s ease-in-out',
+                  '&:hover': {
+                    backgroundColor: 'rgba(48, 140, 248, 0.08)',
+                  },
+                }}
+              >
+                Select to export
+              </Button>
+            </Box>
+          )}
+
+          {/* Selection bar - only show when in selection mode */}
+          {isSelectionMode && (
+            <SelectionBar
+              selectedCount={selectedOrders.size}
+              totalCount={allOrderIds.length}
+              onSelectAll={handleSelectAll}
+              onExport={handleExport}
+              onClose={handleCloseSelection}
+            />
+          )}
 
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {/* System Status: In Progress with Monitoring */}
@@ -224,6 +322,9 @@ function App() {
               lastUpdated="2024-11-13"
               jurisdiction="NY - CA"
               customerAlias="d371faa4-b9d4-47bf-bef3-24cdf49f0144"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_001')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_001', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
@@ -240,6 +341,9 @@ function App() {
               lastUpdated="2024-11-14"
               jurisdiction="TX - FL"
               customerAlias="a123bcde-5678-90ab-cdef-1234567890ab"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_002')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_002', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
@@ -255,6 +359,9 @@ function App() {
               lastUpdated="2024-11-10"
               jurisdiction="CA"
               customerAlias="b987fedc-4321-09ba-fedc-0987654321ba"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_003')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_003', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
@@ -270,6 +377,9 @@ function App() {
               lastUpdated="2024-11-12"
               jurisdiction="NY"
               customerAlias="c456abcd-7890-12ef-ghij-3456789012cd"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_004')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_004', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
@@ -285,6 +395,9 @@ function App() {
               lastUpdated="2024-11-05"
               jurisdiction="WA - OR"
               customerAlias="d789efgh-0123-45ij-klmn-6789012345ef"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_005')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_005', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
@@ -300,6 +413,9 @@ function App() {
               lastUpdated="2024-11-07"
               jurisdiction="IL - MI"
               customerAlias="e012ijkl-3456-78mn-opqr-0123456789gh"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_006')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_006', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
@@ -315,13 +431,16 @@ function App() {
               lastUpdated="2024-11-03"
               jurisdiction="AZ - NM"
               customerAlias="f345mnop-6789-01qr-stuv-4567890123ij"
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_007')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_007', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
 
-            {/* Selectable + Selected */}
+            {/* Order 8 */}
             <OrderCard
-              orderName="Selectable Order (Selected)"
+              orderName="Order with Approved Result"
               orderId="mesh_order_008"
               orderResult="approved"
               type="PLV + BEV"
@@ -330,15 +449,21 @@ function App() {
               lastUpdated="2024-11-08"
               jurisdiction="GA - SC"
               customerAlias="g678qrst-0123-45uv-wxyz-7890123456kl"
-              selectable={true}
-              selected={true}
-              onSelect={(selected) => console.log('Selected:', selected)}
+              selectable={isSelectionMode}
+              selected={selectedOrders.has('mesh_order_008')}
+              onSelect={(selected) => handleSelectOrder('mesh_order_008', selected)}
               onCopyOrderId={() => console.log('Copy order ID')}
               onCopyCustomerAlias={() => console.log('Copy customer alias')}
             />
           </Box>
         </Box>
       </Box>
+
+      {/* Batch Upload Modal */}
+      <BatchUploadModal
+        open={batchUploadModalOpen}
+        onClose={() => setBatchUploadModalOpen(false)}
+      />
     </Box>
   )
 }
